@@ -12,4 +12,6 @@ You will need to collect some data to input some IDs in order for the functions 
 
 I accept tips if you found these functions useful:
 
-Bitcoin: 13E8u5PmKqrpvQRnBMPZjtFzo5nQr5SuuL
+# TODO
+- [ ] Create a proper module
+- [ ] finish missing functions
