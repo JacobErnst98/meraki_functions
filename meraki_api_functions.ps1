@@ -3,6 +3,33 @@
 $api_key = 'INSERT_API_KEY_HERE'
 
 
+function Get-MerakiSite {
+    param(
+    [Parameter(Mandatory=$true)]
+    [string]$SiteName
+    )
+
+    $networkId = (Get-MerakiNetworks | where {$_.name -eq $SiteName}).id
+
+      $api = @{
+
+        "endpoint" = 'https://dashboard.meraki.com/api/v0'
+    
+    }
+
+    $header = @{
+        
+        "X-Cisco-Meraki-API-Key" = $api_key
+        "Content-Type" = 'application/json'
+        
+    }
+
+    $api.url = "/organizations/$((Get-MerakiOrganizations).id)/$($NetworkID)/"
+    $uri = $api.endpoint + $api.url
+    $request = Invoke-RestMethod -Method GET -Uri $uri -Headers $header
+    return $request
+}
+
 function Get-MerakiSwitches {
 
     $header = @{
@@ -106,7 +133,7 @@ function Get-MerakiNetworks {
         
     }
 
-    $api.url = '/organizations/INSERT_ORGANIZATION_ID/networks'
+    $api.url = "/organizations/$((Get-MerakiOrganizations).id)/networks"
     $uri = $api.endpoint + $api.url
     $request = Invoke-RestMethod -Method GET -Uri $uri -Headers $header
     return $request
@@ -133,6 +160,33 @@ function Get-MerakiOrganizations {
     $request = Invoke-RestMethod -Method GET -Uri $uri -Headers $header
     return $request
 
+}
+
+function Get-MerakiNetworkVlans {
+    param(
+    [Parameter(Mandatory=$true)]
+    [string]$SiteName
+    )
+
+    $networkId = (Get-MerakiNetworks | where {$_.name -eq $SiteName}).id
+
+      $api = @{
+
+        "endpoint" = 'https://dashboard.meraki.com/api/v0'
+    
+    }
+
+    $header = @{
+        
+        "X-Cisco-Meraki-API-Key" = $api_key
+        "Content-Type" = 'application/json'
+        
+    }
+
+    $api.url = "/networks/$($NetworkID)/vlans"
+    $uri = $api.endpoint + $api.url
+    $request = Invoke-RestMethod -Method GET -Uri $uri -Headers $header
+    return $request
 }
 
 function Get-MerakiSwitchPorts {
